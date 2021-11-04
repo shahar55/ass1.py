@@ -8,9 +8,9 @@ s.bind(('', MY_PORT))
 packetCounter = 0
 while True:
     data, addr = s.recvfrom(100)
-    text = str(data)
+    text = str(data.decode())
     numPacket, text = text.split('.', 1)
-    if numPacket == packetCounter + 1:
-        print(text)
+    if int(numPacket) == packetCounter + 1:
+        print(text, addr)
         packetCounter = packetCounter + 1
     s.sendto(data, addr)
