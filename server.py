@@ -14,10 +14,13 @@ def main():
         if not addr in clientCounterDict.keys():
             clientCounterDict[addr] = 0
         text = str(data.decode())
-        numPacket, text = text.split('.', 1)
-        if int(numPacket) == clientCounterDict[addr] + 1:
-            print(text, end='')
-            clientCounterDict[addr] = clientCounterDict[addr] + 1
+        if text == "end":
+            clientCounterDict[addr] = 0
+        else:
+            numPacket, text = text.split('.', 1)
+            if int(numPacket) == clientCounterDict[addr] + 1:
+                print(text, end='')
+                clientCounterDict[addr] = clientCounterDict[addr] + 1
         s.sendto(data, addr)
 
 

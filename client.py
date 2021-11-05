@@ -8,25 +8,30 @@ def main():
     portNum = int(sys.argv[2])
     bufferSize = 100
     sendingCounter = 1
-    flag = True
+    packetFlag = True
+    endFlag = False
     with open(sys.argv[3], "r") as in_file:
         while True:
-            if flag:
+            if packetFlag:
                 piece = in_file.read(bufferSize - 4)
                 if piece == "":
-                    break  # end of file
-            s.sendto((str(sendingCounter) + "." +
-                     piece).encode(), (ipNum, portNum))
+                    message = "end".encode()
+                    endFlag = True
+                else:
+                    message = (str(sendingCounter) + "." + piece).encode()
+            s.sendto(message, (ipNum, portNum))
             s.settimeout(1)
             try:
                 data, address = s.recvfrom(bufferSize)
             except socket.timeout:
-                flag = False
+                packetFlag = False
                 continue
-            if data != (str(sendingCounter) + "." + piece).encode():
-                flag = False
+            if data == message and endFlag:
+                break
+            if data != message:
+                packetFlag = False
                 continue
-            flag = True
+            packetFlag = True
             sendingCounter = sendingCounter + 1
     s.close()
     in_file.close()
