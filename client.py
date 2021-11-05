@@ -29,6 +29,7 @@ def main():
             flag = True
             sendingCounter = sendingCounter + 1
     s.close()
+    in_file.close()
 
 
 if __name__ == '__main__':
