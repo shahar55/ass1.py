@@ -3,9 +3,14 @@ import sys
 
 
 def main():
+    if len(sys.argv) != 2:
+        print("Number of arguments isn't correct.")
+        return
+    if int(sys.argv[1]) > 65535 or int(sys.argv[1]) < 1:
+        print("Port number isn't valid.")
+        return
     MY_PORT = int(sys.argv[1])
     BUFFER_SIZE = 100
-
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     s.bind(('', MY_PORT))
     clientCounterDict = {}
